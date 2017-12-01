@@ -1,0 +1,12 @@
+{
+	"name": "Simple Chat",
+	"description": "Show message to other users in the same site.",
+    "autoload": {
+        "psr-4": {
+            "MyApp\\": "src"
+        }
+    },
+    "require": {
+        "cboden/ratchet": "^0.4"
+    }
+}

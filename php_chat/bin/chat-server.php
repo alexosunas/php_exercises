@@ -8,6 +8,7 @@ use MyApp\Chat;
 
     $server = IoServer::factory(
         new HttpServer(
+            //Make it work with a web server
             new WsServer(
                 new Chat()
             )

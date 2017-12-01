@@ -3,13 +3,17 @@ namespace MyApp;
 use Ratchet\MessageComponentInterface;
 use Ratchet\ConnectionInterface;
 
+
+//Implements the Ratchet interface
 class Chat implements MessageComponentInterface {
     protected $clients;
 
+    //The constructor creates object to store the incoming connection
     public function __construct() {
         $this->clients = new \SplObjectStorage;
     }
 
+    //Listen when the handshake is established
     public function onOpen(ConnectionInterface $conn) {
         // Store the new connection to send messages to later
         $this->clients->attach($conn);
@@ -17,14 +21,17 @@ class Chat implements MessageComponentInterface {
         echo "New connection! ({$conn->resourceId})\n";
     }
 
+    //Listen when a message is sent
     public function onMessage(ConnectionInterface $from, $msg) {
+        //Count the number of connections established
         $numRecv = count($this->clients) - 1;
         echo sprintf('Connection %d sending message "%s" to %d other connection%s' . "\n"
             , $from->resourceId, $msg, $numRecv, $numRecv == 1 ? '' : 's');
 
+        //Send the message to each client
         foreach ($this->clients as $client) {
+            // The sender is not the receiver, send to each client connected
             if ($from !== $client) {
-                // The sender is not the receiver, send to each client connected
                 $client->send($msg);
             }
         }
